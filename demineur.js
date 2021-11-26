@@ -1,3 +1,12 @@
+/**
+ * Case class
+ * @param {number} x
+ * @param {number} y
+ * @param {boolean} is_bomb
+ * @param {boolean} is_revealed
+ * @param {boolean} is_flagged
+ * @param {number} value
+ */
 class Case {
     value;
     is_bomb;
@@ -18,7 +27,7 @@ class Case {
 /**
  * Generate board
  * @param {number} size 
- * @returns {Array<Array<Case>>}
+ * @returns {Promise<Array<Array<Case>>>}
  */
 async function generate_board(size) {
     let board = [];
@@ -35,6 +44,7 @@ async function generate_board(size) {
  * Generate mines in the board
  * @param {Array<Array<Case>>} board 
  * @param {number} nb_mines 
+ * @returns {Promise<Array<Array<Case>>>}
  */
 async function generate_mines(board, nb_mines, not_this_case = {x: -1, y: -1}) {
     const yLen = board.length;
@@ -53,6 +63,13 @@ async function generate_mines(board, nb_mines, not_this_case = {x: -1, y: -1}) {
     return board;
 }
 
+/**
+ * Get neigbours of a case and number of bombs
+ * @param {Array<Array<Case>>} board 
+ * @param {number} x 
+ * @param {number} y 
+ * @returns {Promise<Object>} Promise<{neighbours: Array<Case>, bombs: number}>
+ */
 async function generate_neighbours(board, x, y) {
     const yLen = board.length;
     const xLen = board[0].length;
@@ -71,6 +88,14 @@ async function generate_neighbours(board, x, y) {
     return {neighbours, bombs};
 }
 
+/**
+ * When right click, turn on flag on a case
+ * @param {Array<Array<Case>>} board 
+ * @param {number} x 
+ * @param {number} y 
+ * @param {string} gameStatus 
+ * @returns {Promise<Array<Array<Case>>>}
+ */
 async function flag_case(board, x, y, gameStatus) {
     if (gameStatus !== 'Partie en cours...' || board[y][x].is_revealed) {
         return board;
@@ -81,12 +106,12 @@ async function flag_case(board, x, y, gameStatus) {
 }
 
 /**
- * 
- * @param {*} board 
+ * When click on case, reveal case and check if win or loose
+ * @param {Array<Array<Case>>} board 
  * @param {number} x 
  * @param {number} y 
  * @param {string} gameStatus 
- * @returns 
+ * @returns {Promise<Object>} Promise<{board: Array<Array<Case>>, gameStatus: string}>
  */
 async function click_case(board, x, y, gameStatus) {
     if (gameStatus !== 'Partie en cours...' || board[y][x].is_revealed || board[y][x].is_flagged) {
@@ -123,10 +148,22 @@ async function click_case(board, x, y, gameStatus) {
     }
 }
 
+/**
+ * Check loose
+ * @param {Array<Array<Case>>} board 
+ * @param {number} x 
+ * @param {number} y 
+ * @returns {boolean}
+ */
 function check_loose(board, x, y) {
     return board[y][x].is_bomb;
 }
 
+/**
+ * Check win
+ * @param {Array<Array<Case>>} board 
+ * @returns {Promise<boolean>}
+ */
 async function check_win(board) {
     let win = true;
     for (let i = 0; i < board.length; i++) {
@@ -145,8 +182,8 @@ async function check_win(board) {
 
 /**
  * Return size and number of bomb in the board
- * @param {string} diff 
- * @returns 
+ * @param {string} diff difficulty selected (1, 2, 3)
+ * @returns {Object} {size: number, bombs_nb: number}
  */
 function set_difficulty(diff) {
     let difficulty = {};

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Démineur</title>
+    <title>Sourci-Démineur</title>
 </head>
 <body>
     <h1>Démineur</h1>
@@ -16,7 +16,7 @@
         <br />
         <div class="replay-class">
             <button onclick="restart_game()" id="replay">Rejouer</button>&nbsp;
-            <select id="difficultySelect">
+            <select id="difficultySelect" onchange="restart_game()">
                 <option value="1">Facile</option>
                 <option value="2">Moyen</option>
                 <option value="3">Difficile</option>

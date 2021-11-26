@@ -1,3 +1,4 @@
+// Game values
 this.board;
 this.gameStatus;
 this.chrono = 0;
@@ -5,7 +6,9 @@ this.chronoInterval;
 this.firstClick = true;
 this.difficulty;
 
-// Main function, launch when load the page
+/**
+ * Main function, launch when load the page, after we use restart_game()
+ */
 async function main() {
     console.log('Starting main...');
     // Disable right-click
@@ -74,6 +77,9 @@ async function show_board(board) {
 
 }
 
+/**
+ * Handle chrono and display it (this function is called in a setInterval)
+ */
 async function chrono_handle() {
     this.chrono++;
     const chronoDiv = window.document.getElementById('chrono');
@@ -89,6 +95,9 @@ async function chrono_handle() {
     }
 }
 
+/**
+ * Restart game
+ */
 async function restart_game() {
     this.gameStatus = 'Partie en cours...';
     this.firstClick = true;
