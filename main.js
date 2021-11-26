@@ -47,7 +47,7 @@ async function show_board(board) {
                 if (this.firstClick) {
                     this.firstClick = false;
                     this.board = await generate_mines(this.board, this.difficulty.bombs_nb, {x: j, y: i});
-                    chrono_handle();
+                    await chrono_handle();
                     this.chronoInterval = setInterval(chrono_handle, 1000);
                 }
 
@@ -61,9 +61,7 @@ async function show_board(board) {
                     await show_board(this.board);
                 }
 
-                if (this.gameStatus === 'Partie gagnée !') {
-                    clearInterval(this.chronoInterval);
-                } else if (this.gameStatus === 'Partie perdue !') {
+                if (this.gameStatus !== 'Partie en cours...') {
                     clearInterval(this.chronoInterval);
                 }
             });
