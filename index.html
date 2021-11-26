@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démineur</title>
+</head>
+<body>
+    <h1>Démineur</h1>
+
+    <div id="menu">
+        <div class="status-class">Status :&nbsp;<div id="status"></div></div>
+        <br />
+        <div class="chrono-class">Chrono :&nbsp;<div id="chrono"></div></div>
+        <br />
+        <div class="replay-class">
+            <button onclick="restart_game()" id="replay">Rejouer</button>&nbsp;
+            <select id="difficultySelect">
+                <option value="1">Facile</option>
+                <option value="2">Moyen</option>
+                <option value="3">Difficile</option>
+            </select>
+        </div>
+        <br />
+
+    </div>
+
+    <br /><br />
+
+    <div id="board"></div>
+
+    <script src="./demineur.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+        #board {
+            display: block;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .case {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: grey;
+            cursor: pointer;
+        }
+        .status-class {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .chrono-class {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .replay-class {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #replay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 30px;
+            border: 1px solid black;
+            background-color: grey;
+            cursor: pointer;
+        }
+        #difficultySelect {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 30px;
+            border: 1px solid black;
+            background-color: grey;
+            cursor: pointer;
+        }
+        .revealed {
+            background-color: white;
+        }
+        .revealed-bomb {
+            background-color: red;
+        }
+    </style>
+</body>
+</html>
