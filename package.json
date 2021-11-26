@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sourciluss667/demineur-4A.git"
+    "url": "git+https://github.com/Sourciluss667/INTECH-JavaScript-CORMAND.git"
   },
   "author": "Quentin Cormand",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Sourciluss667/demineur-4A/issues"
+    "url": "https://github.com/Sourciluss667/INTECH-JavaScript-CORMAND/issues"
   },
-  "homepage": "https://github.com/Sourciluss667/demineur-4A#readme",
+  "homepage": "https://github.com/Sourciluss667/INTECH-JavaScript-CORMAND#readme",
   "dependencies": {
     "chai": "^4.3.4"
   }
