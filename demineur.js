@@ -49,6 +49,8 @@ async function generate_mines(board, nb_mines, not_this_case = {x: -1, y: -1}) {
             i--;
         } 
     }
+
+    return board;
 }
 
 async function generate_neighbours(board, x, y) {
@@ -69,50 +71,60 @@ async function generate_neighbours(board, x, y) {
     return {neighbours, bombs};
 }
 
-async function flag_case(x, y) {
-    if (this.gameStatus !== 'Partie en cours...' || this.board[y][x].is_revealed) {
-        return;
+async function flag_case(board, x, y, gameStatus) {
+    if (gameStatus !== 'Partie en cours...' || board[y][x].is_revealed) {
+        return board;
     }
 
-    this.board[y][x].is_flagged = !this.board[y][x].is_flagged;
-
-    await check_win(this.board); // Useless
-    await show_board(this.board);
+    board[y][x].is_flagged = !board[y][x].is_flagged;
+    return board;
 }
 
-async function click_case(x, y) {
-    if (this.gameStatus !== 'Partie en cours...' || this.board[y][x].is_revealed || this.board[y][x].is_flagged) {
-        return;
+/**
+ * 
+ * @param {*} board 
+ * @param {number} x 
+ * @param {number} y 
+ * @param {string} gameStatus 
+ * @returns 
+ */
+async function click_case(board, x, y, gameStatus) {
+    if (gameStatus !== 'Partie en cours...' || board[y][x].is_revealed || board[y][x].is_flagged) {
+        return {board, gameStatus};
     }
 
-    this.board[y][x].is_revealed = true;
+    board[y][x].is_revealed = true;
 
     // Check if click on a bomb (loose)
-    if (this.board[y][x].is_bomb) {
-        this.gameStatus = 'Partie perdue !';
-        // Stop chrono
-        clearInterval(this.chronoInterval);
-        await show_board(this.board);
-        return;
+    if (check_loose(board, x, y)) {
+        return { board, gameStatus: 'Partie perdue !' };
     }
 
     // Generate neighbours
-    const nandb = await generate_neighbours(this.board, x, y);
+    const nandb = await generate_neighbours(board, x, y);
     
     if (nandb.bombs === 0) {
         // Recursive call
         for (let i = 0; i < nandb.neighbours.length; i++) {
             const neighbour = nandb.neighbours[i];
             if (!neighbour.is_revealed) {
-                await click_case(neighbour.x, neighbour.y);
+                await click_case(board, neighbour.x, neighbour.y, gameStatus);
             }
         }
     } else {
-        this.board[y][x].value = nandb.bombs;
+        board[y][x].value = nandb.bombs;
     }
 
-    await check_win(this.board);
-    await show_board(this.board);
+    // Check if win
+    if (await check_win(board)) {
+        return { board, gameStatus: 'Partie gagnée !' };
+    } else {
+        return {board, gameStatus};
+    }
+}
+
+function check_loose(board, x, y) {
+    return board[y][x].is_bomb;
 }
 
 async function check_win(board) {
@@ -121,12 +133,13 @@ async function check_win(board) {
         for (let j = 0; j < board[i].length; j++) {
             if (!board[i][j].is_revealed && !board[i][j].is_bomb) {
                 win = false;
-            } 
+            }
         }
     }
     if (win) {
-        this.gameStatus = 'Partie gagnée !';
-        clearInterval(this.chronoInterval);
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -163,6 +176,7 @@ if (typeof window === 'undefined') {
         flag_case,
         click_case,
         check_win,
+        check_loose,
         set_difficulty,
         Case
     };

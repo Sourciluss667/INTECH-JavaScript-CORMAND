@@ -46,15 +46,25 @@ async function show_board(board) {
                 // first click start chrono and generate bombs
                 if (this.firstClick) {
                     this.firstClick = false;
-                    await generate_mines(this.board, this.difficulty.bombs_nb, {x: j, y: i});
+                    this.board = await generate_mines(this.board, this.difficulty.bombs_nb, {x: j, y: i});
                     chrono_handle();
                     this.chronoInterval = setInterval(chrono_handle, 1000);
                 }
 
                 if (e.button === 0) {
-                    click_case(j, i);
+                    const temp = await click_case(this.board, j, i, this.gameStatus);
+                    this.board = temp.board;
+                    this.gameStatus = temp.gameStatus;
+                    await show_board(this.board);
                 } else if (e.button === 2) {
-                    flag_case(j, i);
+                    this.board = await flag_case(this.board, j, i, this.gameStatus);
+                    await show_board(this.board);
+                }
+
+                if (this.gameStatus === 'Partie gagnée !') {
+                    clearInterval(this.chronoInterval);
+                } else if (this.gameStatus === 'Partie perdue !') {
+                    clearInterval(this.chronoInterval);
                 }
             });
         }
