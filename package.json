@@ -1,0 +1,23 @@
+{
+  "name": "demineur",
+  "version": "1.0.0",
+  "description": "Test of demineur.js",
+  "main": "tests.js",
+  "scripts": {
+    "start": "node tests.js",
+    "test": "node tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sourciluss667/demineur-4A.git"
+  },
+  "author": "Quentin Cormand",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sourciluss667/demineur-4A/issues"
+  },
+  "homepage": "https://github.com/Sourciluss667/demineur-4A#readme",
+  "dependencies": {
+    "chai": "^4.3.4"
+  }
+}
